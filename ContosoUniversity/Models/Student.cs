@@ -10,6 +10,12 @@ namespace ContosoUniversity.Models
         public string FirstName { get; set; }
         public DateTime EnrollmentDate { get; set; }
 
+        // Calculeted property
+        public string FullName
+        {
+            get => $"{LastName} {LastName}";
+        }
+
         // Navigation properties
 
         public ICollection<Enrollment> Enrollments { get; set; }
