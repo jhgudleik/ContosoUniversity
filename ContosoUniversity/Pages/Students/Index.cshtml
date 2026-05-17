@@ -2,7 +2,7 @@
 @model ContosoUniversity.Pages.Students.IndexModel
 
 @{
-    ViewData["Title"] = "Studeyts";
+    ViewData["Title"] = "Students";
 }
 
 <div class="index-tools">
@@ -20,23 +20,24 @@
             <a asp-page="./Index">Сбросить</a>
         </div>
     </form>
-</div><table class="table">
+</div>
+<table class="table">
     <thead>
         <tr>
             <th>    
-                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">@Html.DisplayNameFor(model => model.Students[0].LastName)</a>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">@Html.DisplayNameFor(model => model.PLStudents[0].LastName)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Students[0].FirstName)
+                @Html.DisplayNameFor(model => model.PLStudents[0].FirstName)
             </th>
             <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">@Html.DisplayNameFor(model => model.Students[0].EnrollmentDate)</a>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">@Html.DisplayNameFor(model => model.PLStudents[0].EnrollmentDate)</a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Students) {
+@foreach (var item in Model.PLStudents) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
@@ -56,3 +57,24 @@
 }
     </tbody>
 </table>
+
+@{
+    string prevDisabled = Model.PLStudents.HasPreviousPage ? "" : "disabled";
+    string nextDisabled = Model.PLStudents.HasNextPage ? "" : "disabled";
+}
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.PLStudents.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled"
+>
+    Prev
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.PLStudents.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled"
+>
+    Next
+</a>
