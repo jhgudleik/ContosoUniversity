@@ -2,31 +2,31 @@
 @model ContosoUniversity.Pages.Students.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Studeyts";
 }
 
-<h1>Index</h1>
+<h1>Students</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Student[0].LastName)
+            <th>    
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">@Html.DisplayNameFor(model => model.Students[0].LastName)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].FirstName)
+                @Html.DisplayNameFor(model => model.Students[0].FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].EnrollmentDate)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">@Html.DisplayNameFor(model => model.Students[0].EnrollmentDate)</a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Student) {
+@foreach (var item in Model.Students) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
