@@ -1,0 +1,12 @@
+﻿.index-tools, .index-left-side {
+    display: flex;
+    align-items: center;
+}
+
+.index-tools {
+    justify-content: space-between;
+}
+
+.create-button {
+    margin: 0px 16px
+}

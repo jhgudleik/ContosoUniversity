@@ -37,10 +37,9 @@ namespace ContosoUniversity.Pages.Students
                                             select s;
 
             if (!String.IsNullOrEmpty(searchString))
-            {
-                students = students.Where(s => s.LastName.Contains(searchString)
+                students = students
+                    .Where(s => s.LastName.Contains(searchString)
                                        || s.FirstName.Contains(searchString));
-            }
             switch (sortOrder)
             {
                 case "name_desc":

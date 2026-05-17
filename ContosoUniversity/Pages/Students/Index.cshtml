@@ -5,12 +5,22 @@
     ViewData["Title"] = "Studeyts";
 }
 
-<h1>Students</h1>
+<div class="index-tools">
+    <div class="index-left-side">
+        <h1>Students</h1>
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">Create New</a>
-</p>
-<table class="table">
+        <div class="create-button">
+            <a asp-page="Create" class="btn btn-primary">Create New</a>
+        </div>
+    </div>    <form asp-page="./Index" method="get">
+        <div>
+            <label for="SearchString">Поиск по имени:</label>
+            <input type="text" name="SearchString" id="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Сбросить</a>
+        </div>
+    </form>
+</div><table class="table">
     <thead>
         <tr>
             <th>    
