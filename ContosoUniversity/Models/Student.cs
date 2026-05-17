@@ -13,7 +13,7 @@ namespace ContosoUniversity.Models
         // Calculeted property
         public string FullName
         {
-            get => $"{LastName} {LastName}";
+            get => $"{LastName} {FirstName}";
         }
 
         // Navigation properties
