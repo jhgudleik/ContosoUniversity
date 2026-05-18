@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Enrollments";
 }
+<form asp-page="./Index" method="get">
+
 
 <div class="index-tools">
     <div class="index-left-side">
@@ -11,16 +13,59 @@
             <a asp-page="Create" class="btn btn-primary">Create New</a>
         </div>
     </div>
+    
 
-    <form asp-page="./Index" method="get">
+    <div>
+        <label for="items-per-page">Количество записей на странице:</label>
+            <select id="items-per-page" name="pageSize" onchange="this.form.submit()">
+
+                @if (Model.PageSize == 3)
+                {
+                    <option value="3" selected>3</option>
+                }
+                else
+                {
+                    <option value="3">3</option>
+                }
+
+                @if (Model.PageSize == 5 || Model.PageSize == null)
+                {
+                    <option value="5" selected>5</option>
+                }
+                else
+                {
+                    <option value="5">5</option>
+                }
+
+                @if (Model.PageSize == 8)
+                {
+                    <option value="8" selected>8</option>
+                }
+                else
+                {
+                    <option value="8">8</option>
+                }
+
+                @if (Model.PageSize == 10)
+                {
+                    <option value="10" selected>10</option>
+                }
+                else
+                {
+                    <option value="10">10</option>
+                }
+
+            </select>
+        </div>
+
         <div>
             <label for="SearchString">Поиск по студенту или курсу:</label>
             <input type="text" name="SearchString" id="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Search" class="btn btn-primary" />
             <a asp-page="./Index">Сбросить</a>
         </div>
-    </form>
 </div>
+</form>
 
 <table class="table">
     <thead>
@@ -28,6 +73,7 @@
             <th>
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.StudentSort"
+                   asp-route-pageSize="@Model.PageSize"
                    asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.PLEnrollments.FirstOrDefault().Student.FullName)
                 </a>
@@ -35,6 +81,7 @@
             <th>
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.CourseSort"
+                   asp-route-pageSize="@Model.PageSize"
                    asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.PLEnrollments.FirstOrDefault().Course.Title)
                 </a>
@@ -42,6 +89,7 @@
             <th>
                 <a asp-page="./Index"
                    asp-route-sortOrder="@Model.GradeSort"
+                   asp-route-pageSize="@Model.PageSize"
                    asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.PLEnrollments.FirstOrDefault().Grade)
                 </a>
@@ -82,6 +130,7 @@
        asp-route-sortOrder="@Model.CurrentSort"
        asp-route-pageIndex="@(Model.PLEnrollments.PageIndex - 1)"
        asp-route-currentFilter="@Model.CurrentFilter"
+       asp-route-pageSize="@Model.PageSize"
        class="btn btn-primary @prevDisabled">
         Prev
     </a>
@@ -89,6 +138,7 @@
        asp-route-sortOrder="@Model.CurrentSort"
        asp-route-pageIndex="@(Model.PLEnrollments.PageIndex + 1)"
        asp-route-currentFilter="@Model.CurrentFilter"
+       asp-route-pageSize="@Model.PageSize"
        class="btn btn-primary @nextDisabled">
         Next
     </a>

@@ -28,8 +28,9 @@ namespace ContosoUniversity.Pages.Enrollments
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public PaginatedList<Enrollment> PLEnrollments { get; set; } = default!;
+        public int? PageSize { get; set; }
 
-        public async Task OnGetAsync(string sortOrder, string searchString, int? pageIndex)
+        public async Task OnGetAsync(string sortOrder, string searchString, int? pageIndex, int? pageSize)
         {
             CurrentSort = sortOrder;
             CurrentFilter = searchString;
@@ -84,12 +85,15 @@ namespace ContosoUniversity.Pages.Enrollments
                     break;
             }
 
-            // Пагинация
-            int pageSize = _configuration.GetValue<int>("PageSize", 5);
+            // ИСПОЛЬЗУЕМ переданный pageSize, если есть, иначе значение из конфигурации
+            // ПРИСВАИВАЕМ его в свойство модели для использования в Razor
+            PageSize = pageSize;
+            int actualPageSize = pageSize ?? _configuration.GetValue<int>("PageSize", 5);
+
             PLEnrollments = await PaginatedList<Enrollment>.CreateAsync(
                 enrollments.AsNoTracking(),
                 pageIndex ?? 1,
-                pageSize);
+                actualPageSize);
         }
     }
 }
