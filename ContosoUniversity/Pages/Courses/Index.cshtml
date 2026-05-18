@@ -1,42 +1,123 @@
 ﻿@page
 @model ContosoUniversity.Pages.Courses.IndexModel
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Courses";
 }
 
-<h1>Index</h1>
+<form asp-page="./Index" method="get">
+    <div class="index-tools">
+        <div class="index-left-side">
+            <h1>Courses</h1>
+            <div class="create-button">
+                <a asp-page="Create" class="btn btn-primary">Create New</a>
+            </div>
+        </div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+        <div>
+            <label for="items-per-page">Количество записей на странице:</label>
+            <select id="items-per-page" name="pageSize" onchange="this.form.submit()">
+                @if (Model.PageSize == 3)
+                {
+                    <option value="3" selected>3</option>
+                }
+                else
+                {
+                    <option value="3">3</option>
+                }
+                @if (Model.PageSize == 5 || Model.PageSize == null)
+                {
+                    <option value="5" selected>5</option>
+                }
+                else
+                {
+                    <option value="5">5</option>
+                }
+                @if (Model.PageSize == 8)
+                {
+                    <option value="8" selected>8</option>
+                }
+                else
+                {
+                    <option value="8">8</option>
+                }
+                @if (Model.PageSize == 10)
+                {
+                    <option value="10" selected>10</option>
+                }
+                else
+                {
+                    <option value="10">10</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label for="SearchString">Поиск по названию курса:</label>
+            <input type="text" name="SearchString" id="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Сбросить</a>
+        </div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Course[0].Title)
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.TitleSort"
+                   asp-route-pageSize="@Model.PageSize"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.PLCourses.FirstOrDefault().Title)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Course[0].Credits)
+                <a asp-page="./Index"
+                   asp-route-sortOrder="@Model.CreditSort"
+                   asp-route-pageSize="@Model.PageSize"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.PLCourses.FirstOrDefault().Credits)
+                </a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Course) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Credits)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.CourseID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.CourseID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.CourseID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.PLCourses)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.Credits)</td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.CourseID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.CourseID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.CourseID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    string prevDisabled = Model.PLCourses.HasPreviousPage ? "" : "disabled";
+    string nextDisabled = Model.PLCourses.HasNextPage ? "" : "disabled";
+}
+
+<div class="pagination">
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.PLCourses.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       asp-route-pageSize="@Model.PageSize"
+       class="btn btn-primary @prevDisabled">
+        Prev
+    </a>
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.PLCourses.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       asp-route-pageSize="@Model.PageSize"
+       class="btn btn-primary @nextDisabled">
+        Next
+    </a>
+</div>
