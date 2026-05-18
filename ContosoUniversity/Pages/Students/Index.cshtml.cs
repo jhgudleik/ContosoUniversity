@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ContosoUniversity.Data;
+using ContosoUniversity.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.Data;
-using ContosoUniversity.Models;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace ContosoUniversity.Pages.Students
@@ -29,10 +30,10 @@ namespace ContosoUniversity.Pages.Students
         public string CurrentFilter { get; set; }
         public string CurrentSort   { get; set; }
         public PaginatedList<Student> PLStudents { get; set; }
-
         public IQueryable<Student> Students { get;set; } = default!;
+        public int? PageSize { get; set; }
 
-        public async Task OnGetAsync(string sortOrder, string searchString, int? pageIndex)
+        public async Task OnGetAsync(string sortOrder, string searchString, int? pageIndex, int? pageSize)
         {
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -65,18 +66,21 @@ namespace ContosoUniversity.Pages.Students
                     students = students.OrderBy(s => s.LastName);
                     break;
             }
-//            this.Students = await students.AsNoTracking(); //.ToListAsync();
             this.Students = students; //.ToListAsync();
-            int pageSize = configuration.GetValue("PageSize", 5);
-            this.PLStudents = await PaginatedList<Student>.CreateAsync(
-                Students.AsNoTracking(), pageIndex ?? 1, pageSize);
-        }
+            //            int pageSize = configuration.GetValue("PageSize", 5);
+            //            this.PLStudents = await PaginatedList<Student>.CreateAsync(
+            //                Students.AsNoTracking(), pageIndex ?? 1, pageSize);
 
-        /*
-        public async Task OnGetAsync_1()
-        {
-            Students = await _context.Students.ToListAsync();
-        } 
-        */
+            // Установка размера страницы
+            PageSize = pageSize;
+            int actualPageSize = pageSize ?? configuration.GetValue<int>("PageSize", 5);
+
+            PLStudents = await PaginatedList<Student>.CreateAsync(
+                students.AsNoTracking(),
+                pageIndex ?? 1,
+                actualPageSize);
+
+
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace ContosoUniversity.Pages.Courses
             CurrentFilter = searchString;
 
             // Инициализация сортировок
-            TitleSort = String.IsNullOrEmpty(sortOrder) ? "title_asc" : "";
+            TitleSort = String.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
             CreditSort = sortOrder == "credits" ? "credits_desc" : "credits";
 
             // Сброс страницы при новом поиске
@@ -59,9 +59,6 @@ namespace ContosoUniversity.Pages.Courses
             // Сортировка
             switch (sortOrder)
             {
-                case "title_asc":
-                    courses = courses.OrderBy(c => c.Title);
-                    break;
                 case "title_desc":
                     courses = courses.OrderByDescending(c => c.Title);
                     break;
